@@ -63,6 +63,13 @@ const companyInvoiceSchema = new Schema({
     default: Date.now()
   },
 
+  hasReturn: {
+    type: String,
+    enum: ['No', 'Yes'],
+    default: 'No',
+
+  },
+
 
 })
 autoIncrement.initialize(mongoose.connection)

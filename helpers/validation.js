@@ -95,7 +95,6 @@ const validationexportedProductShop = () => {
     body('Invoice_type')
       .isIn(['sales invoice', ' Return invoice']).trim(),
     body('shop_name').isString(),
-    body('shop_phone').isString().trim(),
     body('exported_goods').exists().withMessage('missing'),
     check('exported_goods.*.prodcut').isString().withMessage('product must be enterd'),
     check('exported_goods.*.quantity').exists().withMessage('quantity must be enterd'),

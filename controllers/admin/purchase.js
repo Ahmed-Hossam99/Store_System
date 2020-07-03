@@ -54,12 +54,13 @@ exports.purchaseProduct = async (req, res, next) => {
       })
 
     }
-
+    await newInvoice.save();
     // ========================================================
     //  store dept if exist 
     let newDept
     if (req.body.paid < total) {
       newDept = new outerDeptModel({
+        salseInvoice: newInvoice.id,
         name: companyData === undefined ? company._id : companyData.id,
         totla_Price: total,
         paid: req.body.paid,
@@ -68,14 +69,8 @@ exports.purchaseProduct = async (req, res, next) => {
       })
       await newDept.save()
     }
-    // ==============================================================================
-    const account = await accountModel.findOne({ _id: '5ef07dccc88fe5194456dc25' })
-    console.log(account)
-    if (req.body.paid < total) {
-      account.Total_outer_debt += total - req.body.paid
-    }
-    await account.save();
-    await newInvoice.save();
+
+
     // ============================================================
 
     res.status(201).json({
@@ -95,80 +90,6 @@ exports.purchaseProduct = async (req, res, next) => {
 exports.returnProduct = (req, res, next) => {
   //======================= not yet============================================  
 }
-
-
-// exports.addAccount = async (req, res, next) => {
-//   try {
-//     const newData = new accountModel({
-//       current_balance: req.body.current_balance,
-//       Total_my_debt: req.body.Total_my_debt,
-//       Total_outer_debt: req.body.Total_outer_debt,
-//     })
-//     await newData.save();
-//     console.log('here')
-
-//   } catch (error) {
-//     console.log(error)
-//     res.json({ error })
-//   }
-
-// }
-
-// exports.addProduct = async (req, res, next) => {
-//   try {
-
-//     const color = await colorModel.findOne({ name: req.body.color })
-//     let newColor
-//     if (!color) {
-//       newColor = new colorModel({
-//         name: req.body.color
-//       })
-//       await newColor.save();
-//       console.log(newColor)
-//     }
-//     const size = await sizeModel.findOne({ size: req.body.size })
-//     let newSize
-//     if (!size) {
-//       newSize = new sizeModel({
-//         size: req.body.size
-//       })
-//       await newSize.save();
-//       console.log(newSize)
-//     }
-//     const category = await categoryModel.findOne({ name: req.body.category })
-//     let newCategory
-//     if (!category) {
-//       newCategory = new categoryModel({
-//         name: req.body.category
-//       })
-//       await newCategory.save();
-//       console.log(newCategory)
-//     }
-//     // ============================================
-//     const newProduct = new productModel({
-//       name: req.body.name,
-//       description: req.body.description,
-//       price: req.body.price,
-//       avaliableQuantity: req.body.avaliableQuantity,
-//       purchase_price: req.body.purchase_price,
-//       sales_price: req.body.sales_price,
-//       size: size === undefined ? newSize.id : size._id,
-//       color: color === undefined ? newColor.id : color._id,
-//       category: category === undefined ? newCategory.id : category._id
-//     })
-//     await newProduct.save();
-//     res.status(201).json({ newProduct })
-
-//   } catch (error) {
-//     console.log(error)
-//     res.json({ error })
-//   }
-
-// }
-
-
-
-
 
 
 

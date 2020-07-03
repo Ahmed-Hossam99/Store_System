@@ -8,6 +8,7 @@ const productModel = require('../../models/products/product')
 const colorModel = require('../../models/products/color')
 const sizeModel = require('../../models/products/size')
 const categoryModel = require('../../models/products/category')
+const path = require('path')
 var QRCode = require('qrcode')
 var Barc = require('barcode-generator')
   , barc = new Barc()
@@ -93,12 +94,26 @@ exports.addProduct = async (req, res, next) => {
       category: category === undefined ? newCategory.id : category._id
     })
     await newProduct.save();
-    //create a 300x200 px image with the barcode 1234
-    let buf = barc.code128(newProduct.id, 300, 200);
-    fs.mkdirSync('uploads', buf, function () {
-      console.log('wrote it');
-    });
-    res.status(201).json({ newProduct, puf })
+
+    // var barcode = require('barcode');
+    // var gm = require('gm').subClass({ imageMagick: true });
+
+
+    // var code39 = barcode('code39', {
+    //   data: '12345',
+    //   width: 200,
+    //   height: 100,
+    // });
+
+
+    // var outfile = path.join(__dirname, 'imgs', 'mycode.png')
+    // code39.saveImage(outfile);
+    // // //create a 300x200 px image with the barcode 1234
+    // // let buf = barc.code128('newProduct.id', 300, 200);
+    // // fs.mkdirSync('barc', buf, function () {
+    // //   console.log('wrote it');
+    // // });
+    res.status(201).json({ newProduct, })
 
   } catch (error) {
     console.log(error)

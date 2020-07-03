@@ -62,6 +62,18 @@ const vendorInvoiceSchema = new Schema({
     type: Date,
     default: Date.now()
   },
+  hasReturn: {
+    type: String,
+    enum: ['No', 'Yes'],
+    default: 'No',
+
+  },
+  hasReminder: {
+    type: String,
+    enum: ['No', 'Yes'],
+    default: 'No',
+
+  },
 
 
 })

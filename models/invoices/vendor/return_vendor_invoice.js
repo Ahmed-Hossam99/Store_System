@@ -2,27 +2,37 @@ const mongoose = require('mongoose');
 autoIncrement = require('mongoose-auto-increment');
 const Schema = mongoose.Schema;
 
-const shopInvoiceSchema = new Schema({
-  // خاصه ب الادمن حين الاستيراد 
+const vendorReturnInvoiceSchema = new Schema({
   Invoice_type: {
     type: String,
-    enum: ['sales invoice', ' Return invoice'],
-    required: true
+    default: ' Return invoice',
   },
   Invoice_number: {
     type: Number,
     default: 0,
     unique: true
   },
-  shop_name: {
+  vendor_name: {
     type: String,
     required: true
   },
-  shop_phone: {
+  vendor_phone: {
+    type: String,
+    // required: true
+  },
+  nationalId: {
     type: String,
     required: true
   },
-  exported_goods: [{
+  notes: {
+    type: String,
+  },
+  salesInvoice: {
+    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Shops_Invoices'
+  },
+  return_goods: [{
     prodcut: {
       type: Schema.Types.ObjectId,
       ref: 'Product'
@@ -39,44 +49,31 @@ const shopInvoiceSchema = new Schema({
     },
 
   }],
-  imported_quantity: {
+  toal_quantity: {
     type: Number,
   },
 
   totla_Price: {
     type: Number,
   },
-  paid: {
-    type: Number,
-  },
-  remainder: {
+  sales_invoice_number: {
     type: Number,
   },
   date: {
     type: Date,
     default: Date.now()
   },
-  hasReturn: {
-    type: String,
-    enum: ['No', 'Yes'],
-    default: 'No',
 
-  },
-  hasReminder: {
-    type: String,
-    enum: ['No', 'Yes'],
-    default: 'No',
 
-  },
 
 
 })
 autoIncrement.initialize(mongoose.connection)
-shopInvoiceSchema.plugin(autoIncrement.plugin, {
-  model: 'Shops_Invoices',
+vendorReturnInvoiceSchema.plugin(autoIncrement.plugin, {
+  model: 'Vendor_Return_Invoices',
   field: 'Invoice_number',
   startAt: 1,
   incrementBy: 1
 });
-module.exports = mongoose.model('Shops_Invoices', shopInvoiceSchema, 'Shops_Invoices');
+module.exports = mongoose.model('Vendor_Return_Invoices', vendorReturnInvoiceSchema, 'Vendor_Return_Invoices');
 

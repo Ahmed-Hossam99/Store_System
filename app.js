@@ -10,10 +10,11 @@ const companyRouter = require('./routes/company/company')
 // const adminRouter = require('./routes/admin')
 const adminSalesRouter = require('./routes/admin/sales')
 const adminStoreRouter = require('./routes/admin/store')
+const adminProfitRouter = require('./routes/admin/profit')
 const adminPurshaseRouter = require('./routes/admin/purshase')
 const shopRouter = require('./routes/shop/shop')
 const vendorRouter = require('./routes/Vendor/vendor')
-
+const fs = require('fs');
 autoIncrement = require('mongoose-auto-increment');
 
 
@@ -34,6 +35,24 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 // make the file publically accessable 
 app.use('/uploads', express.static('uploads'));
 
+app.use('/img', express.static(path.join(__dirname, 'imgs', 'mycode.png')))
+app.use('/img', express.static('img'));
+
+
+// ===========================
+(function () {
+  var childProcess = require("child_process");
+  var oldSpawn = childProcess.spawn;
+  function mySpawn() {
+    console.log('spawn called');
+    console.log(arguments);
+    var result = oldSpawn.apply(this, arguments);
+    return result;
+  }
+  childProcess.spawn = mySpawn;
+})();
+
+
 // Enable All CORS Requests 
 app.use(cors())
 
@@ -43,7 +62,9 @@ app.use('/company', companyRouter)
 app.use('/admin', adminSalesRouter)
 app.use('/admin', adminStoreRouter)
 app.use('/admin', adminPurshaseRouter)
+app.use('/admin', adminProfitRouter)
 app.use('/shop', shopRouter)
+
 app.use('/vendor', vendorRouter)
 
 

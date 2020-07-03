@@ -11,7 +11,12 @@ const router = express.Router();
 
 
 router.post('/sales/sales_vendor', passportJWT, isAdmin, validationexportedProductTader(), validate, adminController.exportedProductTader)
+router.post('/sales/return_product/_vendor', passportJWT, isAdmin, adminController.returnProductTrader)
+
 router.post('/sales/sales_shop', passportJWT, isAdmin, validationexportedProductShop(), validate, adminController.exportedProductShop)
+
+router.post('/sales/return_product_shop', passportJWT, isAdmin, adminController.returnProductShop)
+
 
 
 
