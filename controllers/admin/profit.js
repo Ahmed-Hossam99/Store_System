@@ -29,9 +29,9 @@ const moment = require('moment')
 
 exports.getInventory = async (req, res, next) => {
   try {
-    var start = new Date('2020-06-24T07:26:27.883+00:00');
+    var start = new Date(req.body.startDate);
     // end today
-    var end = new Date('2020-06-30T13:03:20.860+00:00');
+    var end = new Date(req.body.endDate);
 
 
     const vendorSales = await invoiceVendorModel.find({ date: { '$gte': start, '$lt': end } })
