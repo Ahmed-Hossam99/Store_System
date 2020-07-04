@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/all_company', passportJWT, companyController.getAllCompany)
 router.get('/:companyId', passportJWT, companyController.getSingleCompany)
-router.post('/add_product', passportJWT, companyController.addProduct)
+
 
 
 

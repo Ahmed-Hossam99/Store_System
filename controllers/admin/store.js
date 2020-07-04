@@ -1,30 +1,10 @@
-const vendorModel = require('../../models/dealings/vendor')
 const shopModel = require('../../models/dealings/shop')
-const invoiceVendorModel = require('../../models/invoices/vendor_invoice')
-const invoiceShopModel = require('../../models/invoices/shop_invoice')
-const accountModel = require('../../models/finance/account')
-const myDeptModel = require('../../models/finance/my_dept')
 const productModel = require('../../models/products/product')
 const colorModel = require('../../models/products/color')
 const sizeModel = require('../../models/products/size')
 const categoryModel = require('../../models/products/category')
-const path = require('path')
-var QRCode = require('qrcode')
-var Barc = require('barcode-generator')
-  , barc = new Barc()
-  , fs = require('fs');
 
 
-
-qrCoder = product => {
-  QRCode.toDataURL(product, {
-    errorCorrectionLevel: "medium",
-    type: '######'
-  }
-    , function (err, url) {
-      console.log(url)
-    })
-}
 
 // add new Shop 
 exports.addShop = async (req, res, next) => {
@@ -94,25 +74,6 @@ exports.addProduct = async (req, res, next) => {
       category: category === undefined ? newCategory.id : category._id
     })
     await newProduct.save();
-
-    // var barcode = require('barcode');
-    // var gm = require('gm').subClass({ imageMagick: true });
-
-
-    // var code39 = barcode('code39', {
-    //   data: '12345',
-    //   width: 200,
-    //   height: 100,
-    // });
-
-
-    // var outfile = path.join(__dirname, 'imgs', 'mycode.png')
-    // code39.saveImage(outfile);
-    // // //create a 300x200 px image with the barcode 1234
-    // // let buf = barc.code128('newProduct.id', 300, 200);
-    // // fs.mkdirSync('barc', buf, function () {
-    // //   console.log('wrote it');
-    // // });
     res.status(201).json({ newProduct, })
 
   } catch (error) {
@@ -251,7 +212,7 @@ exports.updateProduct = async (req, res, next) => {
       product.price = req.body.price
     }
     if (req.body.avaliableQuantity) {
-      product.avaliableQuantity = req.body.avaliableQuantity
+      product.avaliableQuantity += req.body.avaliableQuantity
     }
     if (req.body.color) {
       const color = await colorModel.findOne({ name: req.body.color })
@@ -261,17 +222,19 @@ exports.updateProduct = async (req, res, next) => {
           name: req.body.color
         })
       }
-      product.color = color === undefined ? newColor.id : color._id
+      product.color = color === null ? newColor.id : color._id
     }
     if (req.body.size) {
-      const size = await colorModel.findOne({ size: req.body.size })
+      const size = await sizeModel.findOne({ size: req.body.size })
+      // console.log(co)
       let newSize
       if (!size) {
+        console.log(size)
         newSize = new sizeModel({
           size: req.body.size
         })
       }
-      product.size = size === undefined ? newSize.id : size._id
+      product.size = size === null ? newSize.id : size._id
     }
     if (req.body.category) {
       const category = await categoryModel.findOne({ name: req.body.category })
@@ -281,7 +244,7 @@ exports.updateProduct = async (req, res, next) => {
           name: req.body.category
         })
       }
-      product.category = category === undefined ? newCategory.id : category._id
+      product.category = category === null ? newCategory.id : category._id
     }
     await product.save();
     res.status(201).json({ product, message: 'Product Updated!!' })

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 autoIncrement = require('mongoose-auto-increment');
 const Schema = mongoose.Schema;
 
-const returnInvoiceSchema = new Schema({
+const customerInvoiceSchema = new Schema({
+  // خاصه ب الادمن حين الاستيراد 
   Invoice_type: {
     type: String,
     enum: ['sales invoice', ' Return invoice'],
@@ -50,17 +51,21 @@ const returnInvoiceSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Shops',
   },
-  date: {
-    type: Date,
-    default: Date.now()
+  hasReturn: {
+    type: String,
+    enum: ['No', 'Yes'],
+    default: 'No',
+
   },
-})
+
+
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
-returnInvoiceSchema.plugin(autoIncrement.plugin, {
+customerInvoiceSchema.plugin(autoIncrement.plugin, {
   model: 'Customers_Invoices',
   field: 'Invoice_number',
   startAt: 1,
   incrementBy: 1
 });
-module.exports = mongoose.model('Return_Invoices', returnInvoiceSchema, 'Return_Invoices');
+module.exports = mongoose.model('Customers_Invoices', customerInvoiceSchema, 'Customers_Invoices');
 

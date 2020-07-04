@@ -1,11 +1,11 @@
 
 const shopModel = require('../../models/dealings/shop')
-const invoiceShopModel = require('../../models/invoices/shop_invoice')
+const invoiceShopModel = require('../../models/invoices/shop/shop_invoice')
 const invoiceShopReturnModel = require('../../models/invoices/shop/return_shop_invoice')
-const invoiceCustomerModel = require('../../models/invoices/customer_invoice')
-const invoiceReturnModel = require('../../models/invoices/return_invoice')
+const invoiceCustomerModel = require('../../models/invoices/customer/customer_invoice')
+const invoiceReturnModel = require('../../models/invoices/customer/return_invoice')
 const myDeptModel = require('../../models/finance/my_dept')
-const repositoryModel = require('../../models/repository')
+const repositoryModel = require('../../models/shopRepository/repository')
 const colorModel = require('../../models/products/color')
 const sizeModel = require('../../models/products/size')
 const categoryModel = require('../../models/products/category')
@@ -144,7 +144,6 @@ exports.addShopProduct = async (req, res, next) => {
       barCode: req.body.barCode,
       name: req.body.name,
       description: req.body.description,
-      price: req.body.price,
       avaliableQuantity: req.body.avaliableQuantity,
       purchase_price: req.body.purchase_price,
       sales_price: req.body.sales_price,
@@ -426,6 +425,48 @@ exports.getShopPurchaseAndDeptInvoices = async (req, res, next) => {
       return res.status(403).json({ message: 'this invoices not have any dept ' })
     }
     res.status(200).json({ shopPurchaseInvoice, shopDeptInvoice })
+  } catch (error) {
+    console.log(error)
+    res.json({ error })
+  }
+}
+
+exports.getShopDeptInvoices = async (req, res, next) => {
+  try {
+    const shopId = req.params.shopId
+    const shop = await shopModel.findById({ _id: shopId })
+    const shopDeptInvoices = await myDeptModel.find({ name: shopId, Paid_debt: 'false' })
+    if (shopDeptInvoices.length <= 0) {
+      return res.status(200).json({ message: 'this vendor not have any dept invoices ' })
+    }
+    let totalDept = 0
+    shopDeptInvoices.forEach(item => {
+      totalDept += item.totla_Price
+    });
+
+    res.status(200).json({ shopDeptInvoices, totalDept })
+
+  } catch (error) {
+    console.log(error)
+    res.json({ error })
+  }
+}
+
+exports.getShopDeptPaiedInvoices = async (req, res, next) => {
+  try {
+    const shopId = req.params.shopId
+    const shop = await shopModel.findById({ _id: shopId })
+    const shopDeptInvoices = await myDeptModel.find({ name: shopId, Paid_debt: 'true' })
+    if (shopDeptInvoices.length <= 0) {
+      return res.status(200).json({ message: 'this vendor not have any dept invoices ' })
+    }
+    let totalDept = 0
+    shopDeptInvoices.forEach(item => {
+      totalDept += item.totla_Price
+    });
+
+    res.status(200).json({ shopDeptInvoices, totalDept })
+
   } catch (error) {
     console.log(error)
     res.json({ error })

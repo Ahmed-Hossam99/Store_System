@@ -59,15 +59,8 @@ const vendorReturnInvoiceSchema = new Schema({
   sales_invoice_number: {
     type: Number,
   },
-  date: {
-    type: Date,
-    default: Date.now()
-  },
 
-
-
-
-})
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
 vendorReturnInvoiceSchema.plugin(autoIncrement.plugin, {
   model: 'Vendor_Return_Invoices',

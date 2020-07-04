@@ -14,8 +14,10 @@ const adminProfitRouter = require('./routes/admin/profit')
 const adminPurshaseRouter = require('./routes/admin/purshase')
 const shopRouter = require('./routes/shop/shop')
 const vendorRouter = require('./routes/Vendor/vendor')
+const deptRouter = require('./routes/admin/dept')
 const fs = require('fs');
 autoIncrement = require('mongoose-auto-increment');
+
 
 
 
@@ -64,6 +66,7 @@ app.use('/admin', adminStoreRouter)
 app.use('/admin', adminPurshaseRouter)
 app.use('/admin', adminProfitRouter)
 app.use('/shop', shopRouter)
+app.use('/dept', deptRouter)
 
 app.use('/vendor', vendorRouter)
 

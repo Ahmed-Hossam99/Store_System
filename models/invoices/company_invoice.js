@@ -58,10 +58,6 @@ const companyInvoiceSchema = new Schema({
   remainder: {
     type: Number,
   },
-  date: {
-    type: Date,
-    default: Date.now()
-  },
 
   hasReturn: {
     type: String,
@@ -71,7 +67,7 @@ const companyInvoiceSchema = new Schema({
   },
 
 
-})
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
 companyInvoiceSchema.plugin(autoIncrement.plugin, {
   model: 'Companies_Invoices',

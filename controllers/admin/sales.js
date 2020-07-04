@@ -1,16 +1,12 @@
 const vendorModel = require('../../models/dealings/vendor')
 const shopModel = require('../../models/dealings/shop')
-const invoiceVendorModel = require('../../models/invoices/vendor_invoice')
+const invoiceVendorModel = require('../../models/invoices/vendor/vendor_invoice')
 const invoiceReturnVendorModel = require('../../models/invoices/vendor/return_vendor_invoice')
-const invoiceShopModel = require('../../models/invoices/shop_invoice')
+const invoiceShopModel = require('../../models/invoices/shop/shop_invoice')
 const invoiceReturnShopModel = require('../../models/invoices/shop/return_shop_invoice')
-const accountModel = require('../../models/finance/account')
 const myDeptModel = require('../../models/finance/my_dept')
 const productModel = require('../../models/products/product')
-const colorModel = require('../../models/products/color')
-const sizeModel = require('../../models/products/size')
-const categoryModel = require('../../models/products/category')
-const product = require('../../models/products/product')
+
 const { first } = require('lodash')
 
 
@@ -182,6 +178,7 @@ exports.exportedProductTader = async (req, res, next) => {
 exports.returnProductShop = async (req, res, next) => {
   try {
     const mainInvoice = await invoiceShopModel.findOne({ Invoice_number: req.body.Invoice_number })
+    console.log(mainInvoice)
     if (mainInvoice.hasReturn == 'Yes') {
       return res.status(200).json({ message: 'this invoice was used once time and can not user again ' })
     }

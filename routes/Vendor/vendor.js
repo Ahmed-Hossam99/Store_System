@@ -13,7 +13,7 @@ router.get('/invoices/retrun_&_dept', passportJWT, vendorController.getVendorPur
 router.get('/purchase_invoices/:vendorId', passportJWT, vendorController.getVendorSalesInvoices)
 router.get('/purchase/return_invoices/:vendorId', passportJWT, vendorController.getVendorReturnInvoices)
 router.get('/dept/dept_invoices/:vendorId', passportJWT, vendorController.getVendorDeptInvoices)
-// router.post('/add_product', passportJWT, companyController.addProduct)
+router.get('/dept/vendor/paied_invoices_dept/:vendorId', passportJWT, vendorController.getVendorPaiedDept)
 
 
 

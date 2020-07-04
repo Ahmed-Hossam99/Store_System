@@ -1,11 +1,5 @@
 const invoiceCompanyModel = require('../../models/invoices/company_invoice')
-const accountModel = require('../../models/finance/account')
-const myDeptModel = require('../../models/finance/my_dept')
 const outerDeptModel = require('../../models/finance/outer_dept')
-const productModel = require('../../models/products/product')
-const colorModel = require('../../models/products/color')
-const sizeModel = require('../../models/products/size')
-const categoryModel = require('../../models/products/category')
 const companyModel = require('../../models/dealings/company')
 const companyInvoiceModel = require('../../models/invoices/company_invoice')
 
@@ -20,10 +14,6 @@ exports.purchaseProduct = async (req, res, next) => {
       quantity += prod.quantity
       goods.push(prod)
     });
-    // console.log(goods)
-    // console.log('========================================')
-    // console.log(quantity)
-    // console.log(total)
 
     const newInvoice = new invoiceCompanyModel({
       Invoice_type: req.body.Invoice_type,
@@ -56,15 +46,7 @@ exports.purchaseProduct = async (req, res, next) => {
       })
       await newDept.save()
     }
-    // ==============================================================================
-    const account = await accountModel.findOne({ _id: '5ee1b28a006c091a9c6ed849' })
-    console.log(account)
-    if (req.body.paid < total) {
-      account.Total_outer_debt += total - req.body.paid
-    }
-    await account.save();
     await newInvoice.save();
-    // ============================================================
     // ckeck if company existing 
     const company = await companyModel.findOne({ companyNumber: req.body.company_number })
     console.log(company)
@@ -120,55 +102,7 @@ exports.getSingleCompany = async (req, res, next) => {
   }
 }
 
-exports.addProduct = async (req, res, next) => {
-  try {
 
-    const color = await colorModel.findOne({ name: req.body.color })
-    let newColor
-    if (!color) {
-      newColor = new colorModel({
-        name: req.body.color
-      })
-      await newColor.save();
-      console.log(newColor)
-    }
-    const size = await sizeModel.findOne({ size: req.body.size })
-    let newSize
-    if (!size) {
-      newSize = new sizeModel({
-        size: req.body.size
-      })
-      await newSize.save();
-      console.log(newSize)
-    }
-    const category = await categoryModel.findOne({ name: req.body.category })
-    let newCategory
-    if (!category) {
-      newCategory = new categoryModel({
-        name: req.body.category
-      })
-      await newCategory.save();
-      console.log(newCategory)
-    }
-    // ============================================
-    const newProduct = new productModel({
-      name: req.body.name,
-      description: req.body.description,
-      price: req.body.price,
-      avaliableQuantity: req.body.avaliableQuantity,
-      size: size === undefined ? newSize._id : size._id,
-      color: color === undefined ? newColor.id : color._id,
-      category: category === undefined ? newCategory._id : category._id
-    })
-    await newProduct.save();
-    res.status(201).json({ newProduct })
-
-  } catch (error) {
-    console.log(error)
-    res.json({ error })
-  }
-
-}
 
 
 

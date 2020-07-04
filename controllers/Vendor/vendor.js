@@ -1,18 +1,8 @@
 const vendorModel = require('../../models/dealings/vendor')
-const shopModel = require('../../models/dealings/shop')
-const invoiceVendorModel = require('../../models/invoices/vendor_invoice')
+const invoiceVendorModel = require('../../models/invoices/vendor/vendor_invoice')
 const invoiceReturnVendorModel = require('../../models/invoices/vendor/return_vendor_invoice')
-const invoiceShopModel = require('../../models/invoices/shop_invoice')
-const invoiceCustomerModel = require('../../models/invoices/customer_invoice')
-const accountModel = require('../../models/finance/account')
 const myDeptModel = require('../../models/finance/my_dept')
-const productModel = require('../../models/products/product')
-const repositoryModel = require('../../models/repository')
-const colorModel = require('../../models/products/color')
-const sizeModel = require('../../models/products/size')
-const categoryModel = require('../../models/products/category')
-const userModel = require('../../models/user')
-const repository = require('../../models/repository')
+
 
 
 exports.getAllVendor = async (req, res, next) => {
@@ -146,4 +136,27 @@ exports.getVendorPurchaseAndDeptInvoices = async (req, res, next) => {
     console.log(error)
     res.json({ error })
   }
+}
+
+exports.getVendorPaiedDept = async (req, res, next) => {
+  try {
+    const vendorId = req.params.vendorId
+    const vendor = await vendorModel.findById({ _id: vendorId })
+    console.log(vendor.name)
+    const vendorDeptInvoices = await myDeptModel.find({ name: vendorId, Paid_debt: 'true' })
+    if (vendorDeptInvoices.length <= 0) {
+      return res.status(200).json({ message: 'this vendor not have any dept invoices ' })
+    }
+    let totalDept = 0
+    vendorDeptInvoices.forEach(item => {
+      totalDept += item.totla_Price
+    });
+
+    res.status(200).json({ vendorDeptInvoices, totalDept })
+
+  } catch (error) {
+    console.log(error)
+    res.json({ error })
+  }
+
 }

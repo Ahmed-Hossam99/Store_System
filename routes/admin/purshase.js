@@ -9,8 +9,6 @@ const router = express.Router();
 
 
 router.post('/purshase/purshase_product', passportJWT, isAdmin, validationInvoiceCompany(), validate, companyController.purchaseProduct)
-// router.post('/purshase/try', passportJWT, isAdmin, companyController.addAccount)
-// router.post('/purshase/add_product', passportJWT, isAdmin, validationAddProduct(), validate, companyController.addProduct)
 
 
 

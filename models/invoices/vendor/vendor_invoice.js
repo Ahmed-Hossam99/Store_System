@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 autoIncrement = require('mongoose-auto-increment');
 const Schema = mongoose.Schema;
 
-const customerInvoiceSchema = new Schema({
+const vendorInvoiceSchema = new Schema({
   // خاصه ب الادمن حين الاستيراد 
   Invoice_type: {
     type: String,
@@ -14,46 +14,49 @@ const customerInvoiceSchema = new Schema({
     default: 0,
     unique: true
   },
-  customer_name: {
+  vendor_name: {
+    type: Schema.Types.ObjectId,
+    ref: 'Vendors',
+    required: true
+  },
+  vendor_phone: {
     type: String,
     required: true
   },
-  customer_phone: {
+  nationalId: {
     type: String,
     required: true
   },
-  items_name: [{
-    barCode: {
-      type: String,
-    },
+  exported_goods: [{
     prodcut: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Product'
     },
     quantity: {
       type: Number,
-      default: 1,
       required: true
     },
     Unit_price: {
       type: Number,
-      required: true
+
     },
+    total: {
+      type: Number,
+    },
+
   }],
-  totla_Price: {
+  imported_quantity: {
     type: Number,
   },
 
-  cashier: {
-    type: Schema.Types.ObjectId,
-    ref: 'Users',
+  totla_Price: {
+    type: Number,
   },
-  shop: {
-    type: Schema.Types.ObjectId,
-    ref: 'Shops',
+  paid: {
+    type: Number,
   },
-  date: {
-    type: Date,
-    default: Date.now()
+  remainder: {
+    type: Number,
   },
   hasReturn: {
     type: String,
@@ -61,15 +64,21 @@ const customerInvoiceSchema = new Schema({
     default: 'No',
 
   },
+  hasReminder: {
+    type: String,
+    enum: ['No', 'Yes'],
+    default: 'No',
+
+  },
 
 
-})
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
-customerInvoiceSchema.plugin(autoIncrement.plugin, {
-  model: 'Customers_Invoices',
+vendorInvoiceSchema.plugin(autoIncrement.plugin, {
+  model: 'Vendors_Invoices',
   field: 'Invoice_number',
   startAt: 1,
   incrementBy: 1
 });
-module.exports = mongoose.model('Customers_Invoices', customerInvoiceSchema, 'Customers_Invoices');
+module.exports = mongoose.model('Vendors_Invoices', vendorInvoiceSchema, 'Vendors_Invoices');
 

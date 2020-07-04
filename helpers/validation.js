@@ -70,6 +70,30 @@ const validationAddProduct = () => {
     body('sales_price', 'sales_price must be entered').isNumeric()
   ]
 }
+const validationAddProductShop = () => {
+
+  return [
+    body('name', 'name must to be enter.')
+      .isLength({ min: 5 })
+      .trim(),
+
+    // .isAlphanumeric()
+    body('description', ' description must be entered . ')
+      .isLength({ min: 5 })
+      .trim(),
+    body('size', ' size must be entered . ').isString().trim(),
+
+    body('color', ' color must be entered . ').isString()
+      .trim(),
+    body('category', ' category must be entered . ').isString()
+      .trim(),
+    body('barCode', 'barCode must to be enter.').isString(),
+    body('avaliableQuantity', 'avaliableQuantity must be entered ').isNumeric(),
+    body('purchase_price', 'purchase_price must be entered ').isNumeric(),
+    body('sales_price', 'sales_price must be entered').isNumeric()
+  ]
+}
+
 
 
 
@@ -105,7 +129,51 @@ const validationexportedProductShop = () => {
 }
 
 
+// body('Invoice_type')
+//       .isIn(['sales invoice', ' Return invoice']).trim(),
+const validationReturnProductShop = () => {
 
+  return [
+    body('Invoice_number').isNumeric(),
+    body('customer_name').isString(),
+    body('customer_phone').isString().trim(),
+    body('items_name').exists().withMessage('missing items name'),
+    check('items_name.*.barCode').isString().withMessage('barCode must be enterd'),
+  ]
+}
+
+const validationReturnProductShopToStore = () => {
+
+  return [
+    body('Invoice_number').isNumeric(),
+    body('exported_goods').exists().withMessage('missing exported_goods'),
+    check('exported_goods.*.prodcut').isString().withMessage('prodcut must be enterd'),
+  ]
+}
+
+
+
+
+const validationSalesProductShop = () => {
+
+  return [
+    body('Invoice_type')
+      .isIn(['sales invoice', ' Return invoice']).trim(),
+    body('customer_name').isString(),
+    body('customer_phone').isString().trim(),
+    body('items_name').exists().withMessage('missing items name'),
+    check('items_name.*.barCode').isString().withMessage('barCode must be enterd'),
+  ]
+}
+
+const validationAddShop = () => {
+
+  return [
+    body('shopName', 'shop name must be enterd').isString(),
+    body('phoneNumber', 'phone Number must be enterd').isString(),
+
+  ]
+}
 
 
 
@@ -143,8 +211,13 @@ module.exports = {
   signupValidationRules,
   validationInvoiceCompany,
   validationAddProduct,
+  validationAddShop,
   validationexportedProductTader,
   validationexportedProductShop,
+  validationReturnProductShopToStore,
+  validationAddProductShop,
+  validationReturnProductShop,
+  validationSalesProductShop,
   validate,
 }
 

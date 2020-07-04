@@ -1,5 +1,5 @@
 const express = require('express');
-const profitController = require('../../controllers/admin/profit')
+const deptController = require('../../controllers/admin/dept')
 const { isAdmin } = require('../../helpers/isAdmin')
 const { validationInvoiceCompany, validate, validationAddProduct } = require('../../helpers/validation')
 const passport = require('passport')
@@ -11,8 +11,8 @@ const router = express.Router();
 // router.post('/purshase/purshase_product', passportJWT, isAdmin, validationInvoiceCompany(), validate, companyController.purchaseProduct)
 // // router.post('/purshase/try', passportJWT, isAdmin, companyController.addAccount)
 
-router.get('/profit/inventory/:startDate/:endDate', passportJWT, profitController.getInventory)
-router.get('/profit/inventory/start/:startDate/end/:endDate', passportJWT, profitController.getProfit)
+router.put('/vendor/dept/:invoiceId', passportJWT, deptController.paiedVendorDept)
+router.put('/shop/dept/:invoiceId', passportJWT, deptController.paiedShopDept)
 
 
 module.exports = router

@@ -24,9 +24,6 @@ const deptSchema = new Schema({
     enum: ['true', 'false'],
     default: 'false'
   },
-  date: {
-    type: Date,
-    default: Date.now()
-  }
-})
+
+}, { timestamps: true })
 module.exports = mongoose.model('myDept', deptSchema, 'myDept');

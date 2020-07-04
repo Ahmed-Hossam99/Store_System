@@ -55,15 +55,10 @@ const shopReturnInvoiceSchema = new Schema({
   sales_invoice_number: {
     type: Number,
   },
-  date: {
-    type: Date,
-    default: Date.now()
-  },
 
 
 
-
-})
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
 shopReturnInvoiceSchema.plugin(autoIncrement.plugin, {
   model: 'Shops_Return_Invoices',

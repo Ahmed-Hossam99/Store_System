@@ -52,10 +52,7 @@ const shopInvoiceSchema = new Schema({
   remainder: {
     type: Number,
   },
-  date: {
-    type: Date,
-    default: Date.now()
-  },
+
   hasReturn: {
     type: String,
     enum: ['No', 'Yes'],
@@ -70,7 +67,9 @@ const shopInvoiceSchema = new Schema({
   },
 
 
-})
+
+
+}, { timestamps: true })
 autoIncrement.initialize(mongoose.connection)
 shopInvoiceSchema.plugin(autoIncrement.plugin, {
   model: 'Shops_Invoices',

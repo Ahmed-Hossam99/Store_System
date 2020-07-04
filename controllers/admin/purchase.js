@@ -1,11 +1,5 @@
 const invoiceCompanyModel = require('../../models/invoices/company_invoice')
-const accountModel = require('../../models/finance/account')
-const myDeptModel = require('../../models/finance/my_dept')
 const outerDeptModel = require('../../models/finance/outer_dept')
-const productModel = require('../../models/products/product')
-const colorModel = require('../../models/products/color')
-const sizeModel = require('../../models/products/size')
-const categoryModel = require('../../models/products/category')
 const companyModel = require('../../models/dealings/company')
 
 exports.purchaseProduct = async (req, res, next) => {

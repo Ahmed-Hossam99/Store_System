@@ -17,8 +17,8 @@ router.get('/store/category', passportJWT, adminController.getProductByCategory)
 router.get('/store/all_product', passportJWT, adminController.getAllProducts)
 router.get('/store/:prodId', passportJWT, adminController.getProductById)
 router.get('/store/name', passportJWT, adminController.getProductByName)
-router.delete('/store/:prodId', passportJWT, adminController.deleteProduct)
-router.put('/store/:prodId', passportJWT, adminController.updateProduct)
+router.delete('/store/:prodId', isAdmin, passportJWT, adminController.deleteProduct)
+router.put('/store/:prodId', isAdmin, passportJWT, adminController.updateProduct)
 
 
 
