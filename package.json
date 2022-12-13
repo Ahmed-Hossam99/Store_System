@@ -18,7 +18,7 @@
     "canvas": "^2.6.1",
     "cloudinary": "^1.22.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-promise-router": "^3.0.3",
     "express-validator": "^6.5.0",
     "javascript-barcode-reader": "^0.6.8",
